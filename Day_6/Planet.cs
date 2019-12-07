@@ -57,22 +57,22 @@ namespace Day_6
 
       foreach (var planet in this.orbitingPlanets) {
         var result = planet.GetPlanetDistance(name);
-        if (result >= 0) {
+        if (result != int.MaxValue) {
           return result + 1;
         }
       }
 
-      return -1;
+      return int.MaxValue;
     }
 
     public int GetDistanceBetween(string planet1, string planet2) {
       var distanceTo1 = this.GetPlanetDistance(planet1);
       var distanceTo2 = this.GetPlanetDistance(planet2);
-      var minDistance = (distanceTo1 == -1) || (distanceTo2 == -1) ? -1 : distanceTo1 + distanceTo2;
+      var minDistance = (distanceTo1 == int.MaxValue) || (distanceTo2 == int.MaxValue) ? int.MaxValue : distanceTo1 + distanceTo2;
 
       foreach (var planet in this.orbitingPlanets) {
         var planetDistance = planet.GetDistanceBetween(planet1, planet2);
-        if (planetDistance != -1 && planetDistance < minDistance) {
+        if (planetDistance != int.MaxValue && planetDistance < minDistance) {
           minDistance = planetDistance;
         }
       }

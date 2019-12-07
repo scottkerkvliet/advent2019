@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Day_6</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <DefaultItemExcludes>$(DefaultItemExcludes);problem_2\**</DefaultItemExcludes>
   </PropertyGroup>
 
 </Project>
