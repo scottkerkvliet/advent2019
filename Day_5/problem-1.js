@@ -8,9 +8,6 @@ var program = array.map((value) => parseInt(value));
 program[1] = 12
 program[2] = 2
 
-var currentIndex = 0;
-while (currentIndex !== -1) {
-    currentIndex = Intcode.runCommand(currentIndex, program)
-}
+Intcode.runProgram(program)
 
 console.log(program[0]);
