@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Day_10;
 
-namespace problem_1
+namespace problem_2
 {
   class Program
   {
@@ -27,19 +27,32 @@ namespace problem_1
         asteroidField.Add(asteroidList);
       }
 
-      for (var i = 0; i < asteroidField.Count; i++) {
-        for (var j = 0; j < asteroidField[i].Count; j++) {
-          if (asteroidField[i][j] == null) continue;
-          FindPaths(asteroidField, j, i);
+      var station = asteroidField[19][22];
+      asteroids.Remove(station);
+      var vaporized = 0;
+
+      while (true) {
+        foreach (var asteroid in asteroids) {
+          CheckVisibility(asteroidField, station, asteroid);
+        }
+
+        if (vaporized + station.visibleAsteroids.Count < 200) {
+          vaporized += station.visibleAsteroids.Count;
+          foreach (var visibleAsteroid in station.visibleAsteroids) {
+            asteroidField[visibleAsteroid.y][visibleAsteroid.x] = null;
+            asteroids.Remove(visibleAsteroid);
+          }
+          station.visibleAsteroids.Clear();
+        }
+        else {
+          break;
         }
       }
 
-      var matches = asteroids.Where(a => a.visibleAsteroids.Count == 282);
-      foreach (var match in matches) {
-        Console.WriteLine("Match.  x: " + match.x + "  y: " + match.y);y
-      }
+      station.visibleAsteroids = station.visibleAsteroids.OrderBy((a) => getAngle(station, a)).ToList();
+      var lastVaporize = station.visibleAsteroids[199 - vaporized];
 
-      Console.WriteLine("Max: " + asteroids.Max(a => a.visibleAsteroids.Count));
+      Console.WriteLine("x: " + lastVaporize.x + "  y: " + lastVaporize.y);
     }
 
     static void FindPaths (List<List<Asteroid>> field, int x, int y) {
@@ -87,6 +100,12 @@ namespace problem_1
     static int GCD(int a, int b)
     {
       return b == 0 ? a : GCD(b, a % b);
+    }
+
+    static double getAngle (Asteroid origin, Asteroid point) {
+      var angle = Math.Atan2(point.x - origin.x, origin.y - point.y);
+      if (angle < 0) angle += 2*Math.PI;
+      return angle;
     }
   }
 }
